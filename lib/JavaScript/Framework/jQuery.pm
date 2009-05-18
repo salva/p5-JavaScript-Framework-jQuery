@@ -10,7 +10,7 @@ use MooseX::Types::Moose qw( Bool Int HashRef );
 use MooseX::Params::Validate;
 use JavaScript::Framework::jQuery::Subtypes qw( libraryAssets pluginAssets );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 has 'library' => (
     is => 'rw',
@@ -302,8 +302,18 @@ sub config_plugin {
     my %param = validated_hash(
         \@_,
         name => { isa => 'Str' },
-        library => { isa => libraryAssets },
+        library => { isa => libraryAssets, optional => 1 },
+        no_library => { isa => Bool, default => 0 },
     );
+
+    if ($param{no_library} && $param{library}) {
+        croak("'no_library' is true but a 'library' parameter was passed "
+                . 'with a true value.');
+    }
+    if (!$param{library} && !$param{no_library}) {
+        croak("'library' parameter is required unless 'no_library' parameter is passed "
+                . 'with a true value');
+    }
 
     my $plugclass = _mk_plugin_class_name($param{name});
 
@@ -319,6 +329,7 @@ sub config_plugin {
     }
 
     $self->_stash_plugin_config($param{name}, $param{library});
+    $self->_set_plugin_is_configured($param{name});
 }
 
 =head2 construct_plugin( %params )
@@ -341,12 +352,8 @@ sub construct_plugin {
 
     my $plugclass = _mk_plugin_class_name($param{name});
 
-    unless ($self->_plugin_config($param{name})) {
+    unless ($self->_plugin_is_configured($param{name})) {
         croak("attempt to instantiate unconfigured plugin: $param{name} ($plugclass)");
-    }
-
-    unless ($self->{plugin_seen}{$param{name}}++) {
-        $self->_push_plugin_class_name($param{name});
     }
 
     $self->_enqueue_plugin($plugclass->new( %param ));
@@ -371,10 +378,13 @@ sub add_func_calls {
 
     require JavaScript::Framework::jQuery::Plugin::funcliteral;
 
+    $self->config_plugin(
+        name => 'funcliteral',
+        no_library => 1,
+    );
+
     my $obj =
         JavaScript::Framework::jQuery::Plugin::funcliteral->new(
-            name => 'funcliteral',
-            target_selector => '',          # the Moose role requires target_selector
             funccalls => [ @funccalls ],
         );
     $self->_enqueue_plugin($obj);
@@ -397,6 +407,7 @@ sub link_elements {
 
     for my $config ($self->_plugin_config_list) {
         next unless $self->_plugin_used($config->{name});
+        next unless $config->{library};
         push @css, @{$config->{library}{css}};
     }
 
@@ -432,11 +443,9 @@ sub script_src_elements {
 
     for my $config ($self->_plugin_config_list) {
         next unless $self->_plugin_used($config->{name});
+        next unless $config->{library};
         push @src, @{$config->{library}{src}};
     }
-    #for my $cls ($self->_plugin_class_names) {
-    #    push @src, $self->_plugin_config_src($cls);
-    #}
 
     my (@text, $end);
 
@@ -509,6 +518,17 @@ sub constructor_calls {
     }
 
     return join("\n" => @cons);
+}
+
+sub _set_plugin_is_configured {
+    my ( $self, $name ) = @_;
+    $self->{configured_plugin}{$name} = 1;
+    return;
+}
+
+sub _plugin_is_configured {
+    my ( $self, $name ) = @_;
+    return $self->{configured_plugin}{$name};
 }
 
 sub _plugin_queue {
@@ -613,20 +633,6 @@ sub _plugin_config_src {
     my $src = $self->_plugin_config($plugclass)->{src};
     return unless $src;
     return @$src;
-}
-
-# push Perl jQuery plugin class name onto the stack
-sub _push_plugin_class_name {
-    my ( $self, $name ) = @_;
-    push @{$self->{plugin_class_names}}, $name;
-}
-
-# return the list of configured Perl jQuery plugin class names
-sub _plugin_class_names {
-    my ( $self ) = @_;
-    my $classes = $self->{plugin_class_names};
-    return unless $classes;
-    return @{$classes};
 }
 
 =head2 BUILD( )

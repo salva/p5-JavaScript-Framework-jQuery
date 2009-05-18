@@ -33,7 +33,8 @@ t/05-add_funccall.t
 t/06-mcDropdown.t
 t/07-Superfish.t
 t/08-FilamentGrpMenu.t
-t/09-reset-plugins.t
+t/09-transient-plugins.t
+t/10-funcliteral.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

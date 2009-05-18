@@ -4,10 +4,17 @@ use warnings;
 use strict;
 
 use Moose;
-with 'JavaScript::Framework::jQuery::Role::Plugin';
+use JavaScript::Framework::jQuery::Subtypes qw( libraryAssets pluginAssets );
 use MooseX::Types::Moose qw( Str ArrayRef );
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
+
+has 'name' => (
+    is => 'ro',
+    isa => Str,
+    required => 1,
+    default => 'funcliteral',
+);
 
 has 'funccalls' => (
     is => 'ro',
@@ -19,14 +26,16 @@ no Moose;
 
 =head1 NAME
 
-JavaScript::Framework::jQuery::Plugin::funccalls - Add literal JavaScript code to document ready
+JavaScript::Framework::jQuery::Plugin::funcliteral - Add literal JavaScript code to document ready
 
 =head1 SYNOPSIS
 
  # add literal text to output of $(document).ready(function (){...});
- my $plugin = JavaScript::Framework::jQuery::Plugin::funccalls->new(
-    '$("div ul").foobar();',
-    '$("div ul").barfoo();'
+ my $plugin = JavaScript::Framework::jQuery::Plugin::funcliteral->new(
+    funccalls => [
+        '$("div ul").foobar();',
+        '$("div ul").barfoo();'
+    ]
  );
 
  print $plugin->cons_statement;

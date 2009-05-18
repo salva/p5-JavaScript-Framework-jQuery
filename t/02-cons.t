@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 6;
+use Test::More tests => 9;
 
 my $class;
 BEGIN {
@@ -76,4 +76,38 @@ $jquery = $class->new(
     ],
 );
 isa_ok($jquery, $class);
+
+eval {
+    $jquery->config_plugin(
+        name => 'mcDropdown',
+    );
+};
+like($@,
+    qr/'library' parameter is required unless 'no_library' parameter is passed with a true value/,
+    "exception when 'library' param omitted and 'no_library' not true");
+
+eval {
+    $jquery->config_plugin(
+        name => 'mcDropdown',
+        no_library => 1,
+        library => {
+            src => [ '' ],
+            css => [
+            { href => '', media => '' }
+            ]
+        },
+    );
+};
+like($@,
+    qr/'no_library' is true but a 'library' parameter was passed with a true value/,
+    "exception when 'library' param passed and 'no_library' parameter is passed with a true value");
+
+eval {
+    $jquery->config_plugin(
+        name => 'mcDropdown',
+        no_library => 1,
+    );
+};
+is($@, '', "no exception when 'no_library' true");
+
 

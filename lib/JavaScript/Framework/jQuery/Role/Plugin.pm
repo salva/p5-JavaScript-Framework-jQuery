@@ -7,7 +7,7 @@ use Moose::Role;
 use MooseX::Types::Moose qw( Str );
 use JavaScript::Framework::jQuery::Subtypes qw( libraryAssets pluginAssets );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 has 'name' => (
     is => 'ro',

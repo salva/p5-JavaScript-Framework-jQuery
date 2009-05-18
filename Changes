@@ -1,5 +1,9 @@
 Revision history for JavaScript-Framework-jQuery
 
+0.03  Sun May 17 21:07:24 CDT 2009
+      - Corrected package name in POD NAME section.
+      - Fixed bugs in add_func_calls.
+      - Added tests for add_func_calls.
 0.02  Sun May 17 08:33:15 CDT 2009
       - Corrected absence of SCRIPT tags around $(document).ready(...)
       - Constructor 'plugins' parameter is now an array ref instead of

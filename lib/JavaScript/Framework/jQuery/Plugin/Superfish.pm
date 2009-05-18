@@ -7,7 +7,7 @@ use Moose;
 with 'JavaScript::Framework::jQuery::Role::Plugin';
 use MooseX::Types::Moose qw( Bool Str );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 has 'options' => (
     is => 'ro',

@@ -11,3 +11,4 @@ tar\.gz$
 \.swp$
 \.tmp$
 edit
+.html

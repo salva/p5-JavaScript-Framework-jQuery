@@ -1,5 +1,14 @@
 Revision history for JavaScript-Framework-jQuery
 
+0.05  Tue May 19 03:48:38 CDT 2009
+      - End script elements with closing tag.
+0.04  Mon May 18 21:10:44 CDT 2009
+      - Output JavaScript comment delimiters (//) before CDATA open and
+      close lines.
+      - Updated tests to reflect addition of JavaScript comments before
+      CDATA open and close.
+      - Added no_library parameter for config_plugin method. This covers
+      a code smell which will be addressed in some future release.
 0.03  Sun May 17 21:07:24 CDT 2009
       - Corrected package name in POD NAME section.
       - Fixed bugs in add_func_calls.

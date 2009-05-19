@@ -53,8 +53,8 @@ my $expected = '<link type="text/css" href="ui.all.css" rel="stylesheet" media="
 
 is($jquery->link_elements, $expected, 'output expected LINK elements');
 
-$expected = '<script type="text/javascript" src="jquery.min.js" />
-<script type="text/javascript" src="/js/fg.menu.js" />';
+$expected = '<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="/js/fg.menu.js"></script>';
 
 is($jquery->script_src_elements, $expected, 'output expected SCRIPT (with SRC attr) elements');
 
@@ -66,9 +66,9 @@ content : $("#menu-items").html()
 
 $expected = <<EOF;
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $expected
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;
@@ -111,8 +111,8 @@ $expected = '<link type="text/css" href="ui.all.css" rel="stylesheet" media="scr
 
 is($jquery->link_elements, $expected, 'output expected LINK elements');
 
-$expected = '<script type="text/javascript" src="jquery.min.js" />
-<script type="text/javascript" src="/js/fg.menu.js" />';
+$expected = '<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="/js/fg.menu.js"></script>';
 
 is($jquery->script_src_elements, $expected, 'output expected SCRIPT (with SRC attr) elements');
 
@@ -127,9 +127,9 @@ backLink : false
 
 $expected = <<EOF;
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $expected
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;

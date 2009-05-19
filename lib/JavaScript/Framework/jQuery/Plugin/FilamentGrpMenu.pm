@@ -8,7 +8,7 @@ with 'JavaScript::Framework::jQuery::Role::Plugin';
 use Moose::Util::TypeConstraints;
 use MooseX::Types::Moose qw( Str );
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 has 'content_from' => (
     is => 'ro',

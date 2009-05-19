@@ -7,7 +7,7 @@ use Moose;
 use JavaScript::Framework::jQuery::Subtypes qw( libraryAssets pluginAssets );
 use MooseX::Types::Moose qw( Str ArrayRef );
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 has 'name' => (
     is => 'ro',

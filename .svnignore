@@ -8,3 +8,6 @@ Makefile.old
 *.tar.gz
 *.tmp
 *.bak
+edit
+edit*
+*.html

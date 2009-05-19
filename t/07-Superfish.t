@@ -49,10 +49,10 @@ my $expected = '<link type="text/css" href="ui.all.css" rel="stylesheet" media="
 
 is($jquery->link_elements, $expected, 'output expected LINK elements');
 
-$expected = '<script type="text/javascript" src="jquery.min.js" />
-<script type="text/javascript" src="/js/hoverintent.js" />
-<script type="text/javascript" src="/js/superfish.js" />
-<script type="text/javascript" src="/js/supersubs.js" />';
+$expected = '<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="/js/hoverintent.js"></script>
+<script type="text/javascript" src="/js/superfish.js"></script>
+<script type="text/javascript" src="/js/supersubs.js"></script>';
 
 is($jquery->script_src_elements, $expected, 'output expected SCRIPT (with SRC attr) elements');
 
@@ -62,9 +62,9 @@ $("#navbar").supersubs().superfish();
 
 $expected = <<EOF;
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $expected
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;
@@ -111,10 +111,10 @@ $expected = '<link type="text/css" href="ui.all.css" rel="stylesheet" media="scr
 
 is($jquery->link_elements, $expected, 'output expected LINK elements');
 
-$expected = '<script type="text/javascript" src="jquery.min.js" />
-<script type="text/javascript" src="/js/hoverintent.js" />
-<script type="text/javascript" src="/js/superfish.js" />
-<script type="text/javascript" src="/js/supersubs.js" />';
+$expected = '<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="/js/hoverintent.js"></script>
+<script type="text/javascript" src="/js/superfish.js"></script>
+<script type="text/javascript" src="/js/supersubs.js"></script>';
 
 is($jquery->script_src_elements, $expected, 'output expected SCRIPT (with SRC attr) elements');
 
@@ -128,9 +128,9 @@ option1 : 42
 
 $expected = <<EOF;
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $expected
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;

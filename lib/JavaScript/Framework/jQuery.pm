@@ -10,7 +10,7 @@ use MooseX::Types::Moose qw( Bool Int HashRef );
 use MooseX::Params::Validate;
 use JavaScript::Framework::jQuery::Subtypes qw( libraryAssets pluginAssets );
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 has 'library' => (
     is => 'rw',
@@ -290,9 +290,41 @@ C<constructor_calls> methods.
 
 =head2 config_plugin( %params )
 
+Params
+
+=over
+
+=item name
+
+Required Str
+
+Short name for the plugin module. JavaScript::Framework::jQuery::Plugin::Superfish's
+short name would be Superfish. This module calls require() against a package name
+formed by inserting C<name> into the string
+"JavaScript::Framework::jQuery::Plugin::<name>".
+
+=item no_library
+
+Optional Bool
+
+If true indicates that you are intentionally omitting the C<library> parameter
+from the call to C<config_plugin>.
+
+Passing no_library with a true value and a library param in the same call to
+C<config_plugin> will cause an exception.
+
+The effect of omitting the library data when configuring the plugin is to omit
+the JavaScript and CSS assets from the html markup returned by the
+C<link_elements> and C<script_src_elements> methods. The only use case for this
+is the C<funcliteral> plugin which is used to add to the text output by
+C<constructor_calls> and C<document_ready> and so has no assets associated with
+it.
+
+=back
+
 Set static variables for a particular plugin type.
 
-The plugin must be configured with C<config_plugin()> before calling C<construct_plugin>
+The plugin must be configured with C<config_plugin> before calling C<construct_plugin>
 or an exception will be raised.
 
 =cut
@@ -449,12 +481,14 @@ sub script_src_elements {
 
     my (@text, $end);
 
-    if ($self->xhtml) {
-        $end = ' />';
-    }
-    else {
-        $end = '></script>';
-    }
+    #if ($self->xhtml) {
+    #    $end = ' />';
+    #}
+    #else {
+    #    $end = '></script>';
+    #}
+
+    $end = '></script>';
 
     for (@src) {
         push @text,
@@ -481,9 +515,9 @@ $docready
 });|;
 
     if ($self->xhtml) {
-        $docready = qq|<![CDATA[
+        $docready = qq|//<![CDATA[
 $docready
-]]>|;
+//]]>|;
     }
 
     # don't forget the script tags

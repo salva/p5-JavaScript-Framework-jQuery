@@ -24,11 +24,11 @@ isa_ok($jquery, $class);
 
 $expected =
 '<script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $(document).ready(function (){
 // comment
 });
-]]>
+//]]>
 </script>';
 $jquery->add_func_calls('// comment');
 is($jquery->document_ready, $expected, 'document_ready prints code added with add_func_calls meth');
@@ -92,16 +92,16 @@ $expected = '<link type="text/css" href="ui.all.css" rel="stylesheet" media="scr
 <link type="text/css" href="superfish.css" rel="stylesheet" media="all" />';
 is($jquery->link_elements, $expected, 'output expected LINK elements');
 
-$expected = '<script type="text/javascript" src="jquery.min.js" />
-<script type="text/javascript" src="jquery.mcdropdown.js" />
-<script type="text/javascript" src="jquery.bgiframe.js" />
-<script type="text/javascript" src="superfish.js" />';
+$expected = '<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="jquery.bgiframe.js"></script>
+<script type="text/javascript" src="superfish.js"></script>';
 is($jquery->script_src_elements, $expected, 'HERE output expected SCRIPT (with SRC attr) elements');
 
 # add CDATA wrapper, since we want XHTML
 $expected = <<'EOF';
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $(document).ready(function (){
 $('.foobar').do_stuff();
 $("#inputid").mcDropdown("#ulid");
@@ -109,7 +109,7 @@ $("#divid1").superfish();
 $("#divid2").superfish();
 $("#divid3").superfish();
 });
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;

@@ -39,19 +39,19 @@ my $expected = '<link type="text/css" href="ui.all.css" rel="stylesheet" media="
 <link type="text/css" href="jquery.mcdropdown.css" rel="stylesheet" media="all" />';
 is($jquery->link_elements, $expected, 'output expected LINK elements');
 
-$expected = '<script type="text/javascript" src="jquery.min.js" />
-<script type="text/javascript" src="jquery.mcdropdown.js" />
-<script type="text/javascript" src="jquery.bgiframe.js" />';
+$expected = '<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="jquery.bgiframe.js"></script>';
 is($jquery->script_src_elements, $expected, 'output expected SCRIPT (with SRC attr) elements');
 
 # add CDATA wrapper, since we want XHTML
 $expected = <<'EOF';
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $(document).ready(function (){
 $("#inputid").mcDropdown("#ulid");
 });
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;
@@ -65,11 +65,11 @@ $jquery->construct_plugin(
 );
 $expected = <<'EOF';
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $(document).ready(function (){
 $("#input2id").mcDropdown("#ulid2");
 });
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;
@@ -95,12 +95,12 @@ $jquery->construct_plugin(
 );
 $expected = <<'EOF';
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $(document).ready(function (){
 $("#input2id").mcDropdown("#ulid2");
 $("#ulid").supersubs().superfish();
 });
-]]>
+//]]>
 </script>
 EOF
 chomp $expected;

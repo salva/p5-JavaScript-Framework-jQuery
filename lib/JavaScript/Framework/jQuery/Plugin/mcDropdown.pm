@@ -7,7 +7,7 @@ use Moose;
 with 'JavaScript::Framework::jQuery::Role::Plugin';
 use MooseX::Types::Moose qw( Str );
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 has 'source_ul' => (
     is => 'ro',

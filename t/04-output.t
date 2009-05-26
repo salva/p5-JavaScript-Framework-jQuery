@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 7;
+use Test::More tests => 11;
 
 my $class;
 BEGIN {
@@ -105,4 +105,61 @@ $("#ulid").supersubs().superfish();
 EOF
 chomp $expected;
 is($jquery->document_ready, $expected, 'output jQuery $(document).ready(...)');
+
+# verify no output of duplicate assets
+$jquery = $class->new(
+    xhtml => 1,
+    library => {
+        src => [ 'jquery.min.js' ],
+        css => [ { href => 'ui.all.css', media => 'screen' } ],
+    },
+    plugins => [
+        {
+            name => 'mcDropdown',
+            library => {
+                src => [ 'jquery.jplugin.js' ],
+                css => [ { href => 'jquery.jplugin.css', media => 'all' } ],
+            },
+        },
+        {
+            name => 'FilamentGrpMenu',      # this could be any jQuery plugin that shares a library with another plugin
+            library => {
+                src => [ 'jquery.jplugin.js' ],
+                css => [ { href => 'jquery.jplugin.css', media => 'all' } ],
+            },
+        },
+    ],
+);
+isa_ok($jquery, $class);
+
+$jquery->construct_plugin(
+    name => 'mcDropdown',
+    target_selector => '#inputid',
+    source_ul => '#ulid',
+);
+$jquery->construct_plugin(
+    name => 'FilamentGrpMenu',
+    target_selector => '#inputid',
+    content_from => '#myul',
+);
+
+$expected = '<link type="text/css" href="ui.all.css" rel="stylesheet" media="screen" />
+<link type="text/css" href="jquery.jplugin.css" rel="stylesheet" media="all" />';
+is($jquery->link_elements, $expected, 'output expected LINK elements');
+
+$expected = '<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.jplugin.js"></script>';
+is($jquery->script_src_elements, $expected, 'output expected script src elements');
+
+$expected = '<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function (){
+$("#inputid").mcDropdown("#ulid");
+$("#inputid").menu({
+content : #myul
+});
+});
+//]]>
+</script>';
+is($jquery->document_ready, $expected, 'output expected document_ready');
 

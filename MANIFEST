@@ -1,6 +1,7 @@
 .cvsignore
 .svnignore
 Changes
+examples/README
 inc/Module/AutoInstall.pm
 inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm

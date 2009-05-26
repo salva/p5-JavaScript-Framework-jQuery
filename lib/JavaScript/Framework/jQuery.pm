@@ -10,7 +10,7 @@ use MooseX::Types::Moose qw( Bool Int HashRef );
 use MooseX::Params::Validate;
 use JavaScript::Framework::jQuery::Subtypes qw( libraryAssets pluginAssets );
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 has 'library' => (
     is => 'rw',
@@ -452,7 +452,10 @@ sub link_elements {
         $end = '>';
     }
 
+    my %seen;
+
     for (@css) {
+        next if $seen{$_->{href}}++;
         push @text,
             qq(<link type="text/css" href="$_->{href}" rel="stylesheet" media="$_->{media}") . $end;
     }
@@ -490,7 +493,10 @@ sub script_src_elements {
 
     $end = '></script>';
 
+    my %seen;
+
     for (@src) {
+        next if $seen{$_}++;
         push @text,
             qq(<script type="text/javascript" src="$_") . $end;
     }

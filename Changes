@@ -1,5 +1,8 @@
 Revision history for JavaScript-Framework-jQuery
 
+0.06 - Tue May 26 06:05:55 2009
+	- Suppress output of duplicate link and script elements.
+
 0.05  Tue May 19 03:48:38 CDT 2009
       - End script elements with closing tag.
 0.04  Mon May 18 21:10:44 CDT 2009

@@ -16,15 +16,17 @@ meta-spec:
 name: JavaScript-Framework-jQuery
 no_index:
   directory:
+    - examples
     - inc
     - t
 requires:
   JSON: 2.12
   Moose: 0.77
   MooseX::Params::Validate: 0.09
+  MooseX::Types: 0.10
   MooseX::Types::Moose: 0
   MooseX::Types::Structured: 0.14
   perl: 5.8.0.000
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.05
+version: 0.06

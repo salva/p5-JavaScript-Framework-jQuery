@@ -1,6 +1,7 @@
 .cvsignore
 .svnignore
 Changes
+Changes.bak
 examples/README
 inc/Module/AutoInstall.pm
 inc/Module/Install.pm
@@ -36,6 +37,7 @@ t/07-Superfish.t
 t/08-FilamentGrpMenu.t
 t/09-transient-plugins.t
 t/10-funcliteral.t
+t/11-rel2abs_uri_callback.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

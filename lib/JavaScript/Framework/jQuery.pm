@@ -6,11 +6,11 @@ use strict;
 use Carp;
 
 use Moose;
-use MooseX::Types::Moose qw( Bool Int HashRef );
+use MooseX::Types::Moose qw( Bool CodeRef HashRef Int );
 use MooseX::Params::Validate;
 use JavaScript::Framework::jQuery::Subtypes qw( libraryAssets pluginAssets );
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 has 'library' => (
     is => 'rw',
@@ -34,6 +34,14 @@ has 'transient_plugins' => (
     isa => Bool,
     default => sub { 1 },
 );
+
+has 'rel2abs_uri_callback' => (
+    is => 'rw',
+    isa => CodeRef,
+    default => sub { sub { shift } },
+);
+
+no Moose;
 
 =head1 NAME
 
@@ -284,6 +292,15 @@ the list of plugin constructors and assets (JavaScript and CSS files) returned
 by the C<script_src_elements>, C<link_elements>, C<document_ready> and
 C<constructor_calls> methods.
 
+=item rel2abs_uri_callback
+
+A reference to a subroutine that takes a (possibly) relative URI and returns
+and absolute URI.
+
+In a Catalyst application this parameter might be passed with a value like:
+
+  rel2abs_uri_callback => sub { $c->uri_for(shift) }
+
 =back
 
 =cut
@@ -455,9 +472,11 @@ sub link_elements {
     my %seen;
 
     for (@css) {
-        next if $seen{$_->{href}}++;
+        my $href = $_->{href};
+        next if $seen{$href}++;
+        $href = $self->rel2abs_uri_callback->($href);
         push @text,
-            qq(<link type="text/css" href="$_->{href}" rel="stylesheet" media="$_->{media}") . $end;
+            qq(<link type="text/css" href="${href}" rel="stylesheet" media="$_->{media}") . $end;
     }
 
     return join("\n" => @text);
@@ -495,10 +514,11 @@ sub script_src_elements {
 
     my %seen;
 
-    for (@src) {
-        next if $seen{$_}++;
+    for my $src (@src) {
+        next if $seen{$src}++;
+        $src = $self->rel2abs_uri_callback->($src);
         push @text,
-            qq(<script type="text/javascript" src="$_") . $end;
+            qq(<script type="text/javascript" src="${src}") . $end;
     }
 
     return join("\n" => @text);
@@ -664,6 +684,7 @@ sub _plugin_config_css {
     my ( $self, $plugclass ) = @_;
     my $css = $self->_plugin_config($plugclass)->{css};
     return unless $css;
+
     return @$css;
 }
 
@@ -672,6 +693,7 @@ sub _plugin_config_src {
     my ( $self, $plugclass ) = @_;
     my $src = $self->_plugin_config($plugclass)->{src};
     return unless $src;
+
     return @$src;
 }
 

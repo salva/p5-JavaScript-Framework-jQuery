@@ -1,8 +1,5 @@
 Revision history for JavaScript-Framework-jQuery
 
-0.07 - Thu Jun 18 17:26:00 2009
-
-
 0.06 - Tue May 26 06:05:55 2009
 	- Suppress output of duplicate link and script elements.
 

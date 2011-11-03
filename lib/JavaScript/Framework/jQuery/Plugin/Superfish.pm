@@ -12,7 +12,7 @@ our $VERSION = '0.05';
 has 'options' => (
     is => 'ro',
     isa => Str,
-    coerce => 1,
+    # coerce => 1,
 );
 
 has 'use_supersubs' => (
@@ -24,7 +24,7 @@ has 'use_supersubs' => (
 has 'supersubs_options' => (
     is => 'ro',
     isa => Str,
-    coerce => 1,
+    # coerce => 1,
 );
 
 no Moose;

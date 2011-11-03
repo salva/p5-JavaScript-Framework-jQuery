@@ -22,7 +22,7 @@ eval {
     );
 };
 like($@,
-    qr/\QAttribute (library) does not pass the type constraint because: Validation failed for 'JavaScript::Framework::jQuery::Subtypes::libraryAssets' failed with value flintstone/,
+    qr/Attribute \(library\) does not pass the type constraint because: Validation failed for 'JavaScript::Framework::jQuery::Subtypes::libraryAssets'.*\bwith value\b.*\bflintstone/,
     'raise exception to violation of type constraint');
 
 $jquery = $class->new(
